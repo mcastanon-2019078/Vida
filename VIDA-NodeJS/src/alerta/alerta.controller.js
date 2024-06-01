@@ -3,15 +3,19 @@ import Alerta from './alerta.model.js'
 
 export const save = async (req, res) => {
     try {
-        let data = req.body
-        let alerta = new Alerta(data)
-        await alerta.save()
-        return res.send({ message: 'Alert saved successfully' })
+        let data = req.body;
+        if (data.fotoDesaparecido) {
+            data.fotoDesaparecido = Buffer.from(data.fotoDesaparecido, 'base64');
+        }
+
+        let alerta = new Alerta(data);
+        await alerta.save();
+        return res.send({ message: 'Alert saved successfully' });
     } catch (error) {
-        console.error(error)
-        return res.status(500).send({ message: 'Error saving alert' })
+        console.error(error);
+        return res.status(500).send({ message: 'Error saving alert' });
     }
-}
+};
 
 export const get = async (req, res) => {
     try {

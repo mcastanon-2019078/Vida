@@ -32,7 +32,7 @@ const alertaSchema = Schema({
         required: true
     },
     fechaDesaparicion: {
-        type: Date,
+        type: String, /* edité esto para prueba*/
         required: true
     },
     sexoDesaparecido: {

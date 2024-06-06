@@ -1,0 +1,71 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "VIDA",
+    "collectionId": "42b2cae9-4d45-449e-bcc6-b17f5e38e793",
+    "dateExported": "2024-06-05T02:20:43.477Z",
+    "version": "1.2",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "190f5b5c-121a-442d-ab4a-275101a521d2",
+            "colId": "42b2cae9-4d45-449e-bcc6-b17f5e38e793",
+            "containerId": "",
+            "name": "ALERTA",
+            "url": "localhost:2880/save",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-06-04T03:26:33.563Z",
+            "modified": "2024-06-04T03:38:00.623Z",
+            "headers": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "nombresDesaparecido",
+                        "value": "dfdfdf"
+                    },
+                    {
+                        "name": "apellidosDesaparecido",
+                        "value": "dfdfd"
+                    },
+                    {
+                        "name": "edadDesaparecido",
+                        "value": "11"
+                    },
+                    {
+                        "name": "estaturaDesaparecido",
+                        "value": "1.70"
+                    },
+                    {
+                        "name": "descripcionDesaparecido",
+                        "value": "dfdfd"
+                    },
+                    {
+                        "name": "direccionVivienda",
+                        "value": "zona 7"
+                    },
+                    {
+                        "name": "direccionDesaparicion",
+                        "value": "zona 7"
+                    },
+                    {
+                        "name": "fechaDesaparicion",
+                        "value": "10 de mayo"
+                    },
+                    {
+                        "name": "sexoDesaparecido",
+                        "value": "Masculino"
+                    }
+                ],
+                "files": [
+                    {
+                        "name": "fotoDesaparecido",
+                        "value": "c:\\Users\\user\\Pictures\\image.jpg"
+                    }
+                ]
+            }
+        }
+    ],
+    "ref": "z_xj5zRKJ2bQdT-mLwQ4OQbI97fDHGHom9ZvWBCbpZMVarMnK7vJWtWoplxWduKXhbKFOLfCl7hRC8rkO4QlnA"
+}

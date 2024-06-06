@@ -22,7 +22,7 @@ app.use(helmet()) //Seguridad
 app.use(morgan('dev'))
 
 //Routes
-app.use(alertRoutes)
+app.use('/alert', alertRoutes)
 
 //Levantamos el servidor
 export const initServer = () => {

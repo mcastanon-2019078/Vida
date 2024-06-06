@@ -28,6 +28,30 @@ export const get = async (req, res) => {
     }
 }
 
+export const getGenderFemale = async(req, res)=>{
+    try {
+        let alert = await Alerta.find({sexoDesaparecido: 'Femenino'})
+        if (!alert) return res.status(404).send({msg: 'No hay personas reportadas con este genero'})
+        return res.status(200).send({msg: 'Personas reportadas con este genero:', alert})
+    } catch (err) {
+        console.error(err)
+        return res.status(500).send({message: "Error getting gender"})
+    }
+}
+
+export const getGenderMale = async(req, res)=>{
+    try {
+        let alert = await Alerta.find({sexoDesaparecido: 'Masculino'})
+        if (!alert) return res.status(404).send({msg: 'No hay personas reportadas con este genero'})
+        return res.status(200).send({msg: 'Personas reportadas con este genero:', alert})
+    } catch (err) {
+        console.error(err)
+        return res.status(500).send({message: "Error getting gender"})
+    }
+}
+
+
+
 export const update = async (req, res) => {
     try {
         let { id } = req.params
@@ -38,7 +62,6 @@ export const update = async (req, res) => {
             data,
             { new: true }
         )
-
         if (!updatedAlert) return res.status(404).send({ message: 'Alert not found and not updated' })
         return res.send({ message: 'Alert updated successfully', updatedAlert })
     } catch (error) {

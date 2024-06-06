@@ -1,0 +1,128 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "VIDA",
+    "collectionId": "614bd901-2030-483d-b2b4-0304059f7149",
+    "dateExported": "2024-06-06T19:01:40.994Z",
+    "version": "1.2",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "7d22af48-fb14-4edf-af07-1e0bc6516d3a",
+            "colId": "614bd901-2030-483d-b2b4-0304059f7149",
+            "containerId": "",
+            "name": "ALERTA",
+            "url": "/alert/save",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-06-06T18:56:51.462Z",
+            "modified": "2024-06-06T19:01:04.280Z",
+            "headers": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "nombresDesaparecido",
+                        "value": "Hermes"
+                    },
+                    {
+                        "name": "apellidosDesaparecido",
+                        "value": "Bladimir"
+                    },
+                    {
+                        "name": "edadDesaparecido",
+                        "value": "18"
+                    },
+                    {
+                        "name": "estaturaDesaparecido",
+                        "value": "1.70"
+                    },
+                    {
+                        "name": "descripcionDesaparecido",
+                        "value": "dfdfd"
+                    },
+                    {
+                        "name": "direccionVivienda",
+                        "value": "zona 7"
+                    },
+                    {
+                        "name": "direccionDesaparicion",
+                        "value": "zona 7"
+                    },
+                    {
+                        "name": "fechaDesaparicion",
+                        "value": "2024-06-05"
+                    },
+                    {
+                        "name": "sexoDesaparecido",
+                        "value": "Masculino"
+                    },
+                    {
+                        "name": "nombresDenunciante",
+                        "value": "Gereardo"
+                    },
+                    {
+                        "name": "apellidosDenunciante",
+                        "value": "Cruz"
+                    },
+                    {
+                        "name": "DPIDenunciente",
+                        "value": "202 201 456 548 878"
+                    },
+                    {
+                        "name": "telefonoDenunciante",
+                        "value": "23568978"
+                    },
+                    {
+                        "name": "emailDenunciante",
+                        "value": "gerardocruz@gmail.com"
+                    },
+                    {
+                        "name": "parentescoDenunciante",
+                        "value": "Amigo"
+                    },
+                    {
+                        "name": "edadDenunciante",
+                        "value": "19"
+                    },
+                    {
+                        "name": "direccionViviendaDenunciante",
+                        "value": "Zona 7, de mixco"
+                    },
+                    {
+                        "name": "sexoDenunciante",
+                        "value": "Masculino"
+                    },
+                    {
+                        "name": "estadoAlerta",
+                        "value": "Desaparecido"
+                    }
+                ],
+                "files": [
+                    {
+                        "name": "fotoDesaparecido",
+                        "value": "c:\\Users\\Informatica\\Pictures\\Screenshots\\Captura de pantalla 2024-01-19 164115.png"
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "3ec881b5-d2f6-4f30-b886-0ea101914a03",
+            "colId": "614bd901-2030-483d-b2b4-0304059f7149",
+            "containerId": "",
+            "name": "GET",
+            "url": "/alert/get",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2024-06-06T19:01:19.452Z",
+            "modified": "2024-06-06T19:01:26.519Z",
+            "headers": []
+        }
+    ],
+    "settings": {
+        "options": {
+            "baseUrl": "localhost:2880"
+        }
+    },
+    "ref": "l462pi0OzS5K84qE7xDSZQ-KpIoYMD_LVwzc4DOnmoB3jY6JRmZc1eZvBnqMLPaECVGp3ld1ZEfXIcd0CRbHyQ"
+}

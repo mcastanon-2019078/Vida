@@ -1,21 +1,21 @@
 {
     "clientName": "Thunder Client",
     "collectionName": "VIDA",
-    "collectionId": "42b2cae9-4d45-449e-bcc6-b17f5e38e793",
-    "dateExported": "2024-06-05T02:20:43.477Z",
+    "collectionId": "0f601912-3099-4429-af7e-f07a5d711052",
+    "dateExported": "2024-06-07T05:51:02.030Z",
     "version": "1.2",
     "folders": [],
     "requests": [
         {
-            "_id": "190f5b5c-121a-442d-ab4a-275101a521d2",
-            "colId": "42b2cae9-4d45-449e-bcc6-b17f5e38e793",
+            "_id": "256ec6e0-c862-4788-af6e-117b940b0728",
+            "colId": "0f601912-3099-4429-af7e-f07a5d711052",
             "containerId": "",
             "name": "ALERTA",
-            "url": "localhost:2880/save",
+            "url": "/alert/save",
             "method": "POST",
             "sortNum": 10000,
-            "created": "2024-06-04T03:26:33.563Z",
-            "modified": "2024-06-04T03:38:00.623Z",
+            "created": "2024-06-06T05:52:15.462Z",
+            "modified": "2024-06-07T05:47:18.652Z",
             "headers": [],
             "body": {
                 "type": "formdata",
@@ -23,11 +23,11 @@
                 "form": [
                     {
                         "name": "nombresDesaparecido",
-                        "value": "dfdfdf"
+                        "value": "Bryan "
                     },
                     {
                         "name": "apellidosDesaparecido",
-                        "value": "dfdfd"
+                        "value": "Jualian"
                     },
                     {
                         "name": "edadDesaparecido",
@@ -39,7 +39,7 @@
                     },
                     {
                         "name": "descripcionDesaparecido",
-                        "value": "dfdfd"
+                        "value": "Hola se desaparecio"
                     },
                     {
                         "name": "direccionVivienda",
@@ -51,21 +51,78 @@
                     },
                     {
                         "name": "fechaDesaparicion",
-                        "value": "10 de mayo"
+                        "value": "2024-06-23"
                     },
                     {
                         "name": "sexoDesaparecido",
                         "value": "Masculino"
+                    },
+                    {
+                        "name": "nombresDenunciante",
+                        "value": "Mama "
+                    },
+                    {
+                        "name": "apellidosDenunciante",
+                        "value": "Mama"
+                    },
+                    {
+                        "name": "DPIDenunciente",
+                        "value": "325 654 644 644"
+                    },
+                    {
+                        "name": "telefonoDenunciante",
+                        "value": "56894785"
+                    },
+                    {
+                        "name": "emailDenunciante",
+                        "value": "mama@gmail.com"
+                    },
+                    {
+                        "name": "parentescoDenunciante",
+                        "value": "familiar"
+                    },
+                    {
+                        "name": "edadDenunciante",
+                        "value": "35"
+                    },
+                    {
+                        "name": "direccionViviendaDenunciante",
+                        "value": "Zona 7, Gautemala"
+                    },
+                    {
+                        "name": "sexoDenunciante",
+                        "value": "Femenino"
+                    },
+                    {
+                        "name": "estadoAlerta",
+                        "value": "Desaparecido"
                     }
                 ],
                 "files": [
                     {
                         "name": "fotoDesaparecido",
-                        "value": "c:\\Users\\user\\Pictures\\image.jpg"
+                        "value": "c:\\Users\\Familia Lopez\\Pictures\\colegio.png"
                     }
                 ]
             }
+        },
+        {
+            "_id": "b111079d-94c4-493e-b682-91cd63f13fe7",
+            "colId": "0f601912-3099-4429-af7e-f07a5d711052",
+            "containerId": "",
+            "name": "GET",
+            "url": "/alert/get",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2024-06-06T05:54:11.024Z",
+            "modified": "2024-06-06T06:01:21.663Z",
+            "headers": []
         }
     ],
-    "ref": "z_xj5zRKJ2bQdT-mLwQ4OQbI97fDHGHom9ZvWBCbpZMVarMnK7vJWtWoplxWduKXhbKFOLfCl7hRC8rkO4QlnA"
+    "settings": {
+        "options": {
+            "baseUrl": "localhost:2880"
+        }
+    },
+    "ref": "Wk72YL6brtf1Bjn6dDMtpJF-DPBL2xjfS0-kyJuBNmdF9Kz8kL_eoyjbc03zd6iLCllBoS2Me-ruiZeaYgh6cQ"
 }

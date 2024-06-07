@@ -20,7 +20,7 @@ export const save = async (req, res) => {
 export const get = async (req, res) => {
     try {
         let alertas = await Alerta.find()
-        if (alertas.length === 0) return res.status(404).send({ message: 'There are not animals to see' })
+        if (alertas.length === 0) return res.status(404).send({ message: 'There are not alerts to see' })
         return res.send({ alertas })
     } catch (error) {
         console.error(error)
@@ -74,3 +74,4 @@ export const search = async (req, res) => {
         return res.status(500).send({ message: 'Error gettin alert' })
     }
 }
+

@@ -32,7 +32,7 @@ const alertaSchema = Schema({
         required: true
     },
     fechaDesaparicion: {
-        type: Date, /* edité esto para prueba*/
+        type: Date, 
         required: true
     },
     sexoDesaparecido: {
@@ -46,45 +46,45 @@ const alertaSchema = Schema({
     },
     nombresDenunciante: {
         type: String,
-      //  required: true
+        required: true
     },
     apellidosDenunciante: {
         type: String,
-       // required: true
+        required: true
     },
     DPIDenunciente: {
         type: String,
-       // required: true
+        required: true
     },
     telefonoDenunciante: {
         type: String,
-       //required: true
+        required: true
     },
     emailDenunciante: {
         type: String,
-     //  required: true
+        required: true
     },
     parentescoDenunciante: {
         type: String,
-       // required: true
+        required: true
     },
     edadDenunciante: {
         type: Number,
-        //required: true
+        required: true
     },
     direccionViviendaDenunciante: {
         type: String,
-       // required: true
+        required: true
     },
     sexoDenunciante: {
         type: String,
         enum: ['Masculino', 'Femenino'],
-      // required: true
+        required: true
     },
     estadoAlerta: {
         type: String,
         enum: ['Encontrado', 'Desaparecido'],
-        //required: true
+        required: true
     }
 })
 

@@ -1,79 +1,48 @@
-import React, { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { View, Text, Image, StyleSheet, ActivityIndicator, ScrollView } from 'react-native'
-import { getAlertRequest } from '../services/api.js'
+import { useGetAlertas } from '../shared/hooks/alerta/useGetAlertas'
 
 export const AlertClient = () => {
-    const [alerts, setAlerts] = useState([])
-    const [loading, setLoading] = useState(true)
+    const { alerts, isFetching, getAlerts } = useGetAlertas()
 
     useEffect(() => {
-        const fetchAlerts = async () => {
-            try {
-                const response = await getAlertRequest()
-                if (response.error) {
-                    console.error("Error al obtener Alertas:", response.error)
-                } else {
-                    console.log(response.data) // Verifica la respuesta de la API
-                    if (Array.isArray(response.data.alertas)) {
-                        setAlerts(response.data.alertas)
-                    } else {
-                        console.error("El formato de los datos de alertas no es válido:", response.data)
-                    }
-                }
-            } catch (err) {
-                console.error("Error al obtener Alertas:", err)
-            } finally {
-                setLoading(false)
-            }
-        }
-        fetchAlerts()
+        getAlerts()
     }, [])
 
     const renderAlerts = () => {
-        if (loading) {
+        if (isFetching) {
             return <ActivityIndicator size="large" color="#0000ff" />
-        } else {
+        } else if (alerts && Array.isArray(alerts.alertas)) {
             return (
                 <ScrollView>
-                    {alerts.map((alert) => (
+                    {alerts.alertas.map((alert) => (
                         <View key={alert._id} style={styles.card}>
-                            <View>
-                                <Text style={styles.title2}>Datos del Desaparecido:</Text>
-                            </View>
-                            {alert.fotoDesaparecido && (
-                                <Image
-                                    source={{ uri: `data:image/jpeg;base64,${alert.fotoDesaparecido}` }}
-                                    style={styles.image}
-                                />
-                            )}
-                            <View>
-                                <Text style={styles.text}>Desaparecido: {alert.nombresDesaparecido} {alert.apellidosDesaparecido}</Text>
-                                <Text style={styles.text}>Edad: {alert.edadDesaparecido}</Text>
-                                <Text style={styles.text}>Estatura: {alert.estaturaDesaparecido} m</Text>
-                                <Text style={styles.text}>Descripción: {alert.descripcionDesaparecido}</Text>
-                                <Text style={styles.text}>Dirección de vivienda: {alert.direccionVivienda}</Text>
-                                <Text style={styles.text}>Dirección de desaparición: {alert.direccionDesaparicion}</Text>
-                                <Text style={styles.text}>Fecha de desaparición: {new Date(alert.fechaDesaparicion).toLocaleDateString()}</Text>
-                                <Text style={styles.text}>Sexo: {alert.sexoDesaparecido}</Text>
-                                <Text style={styles.text}>Estado de la alerta: {alert.estadoAlerta}</Text>
-                            </View>
-                            <View>
-                                <View>
-                                    <Text style={styles.title2}>Datos del Denunciante:</Text>
+                            <Text style={styles.title2}>Datos del Desaparecido</Text>
+                            <View style={styles.imageAndDataContainer}>
+                                {alert.fotoDesaparecido && (
+                                    <Image
+                                        source={{ uri: `data:image/jpeg;base64,${alert.fotoDesaparecido}` }}
+                                        style={styles.image}
+                                    />
+                                )}
+                                <View style={styles.textContainer}>
+                                    <Text style={styles.textName}>{alert.nombresDesaparecido} {alert.apellidosDesaparecido}</Text>
+                                    <Text style={styles.text}>Edad: {alert.edadDesaparecido} años</Text>
+                                    <Text style={styles.text}>Estatura: {alert.estaturaDesaparecido} m</Text>
+                                    <Text style={styles.text}>Descripción: {alert.descripcionDesaparecido}</Text>
+                                    <Text style={styles.text}>Dirección de vivienda: {alert.direccionVivienda}</Text>
+                                    <Text style={styles.text}>Dirección de desaparición: {alert.direccionDesaparicion}</Text>
+                                    <Text style={styles.text}>Fecha de desaparición: {new Date(alert.fechaDesaparicion).toLocaleDateString()}</Text>
+                                    <Text style={styles.text}>Sexo: {alert.sexoDesaparecido}</Text>
+                                    <Text style={styles.text}>Estado de la alerta: {alert.estadoAlerta}</Text>
                                 </View>
-                                <Text style={styles.text}>Denunciante: {alert.nombresDenunciante} {alert.apellidosDenunciante}</Text>
-                                <Text style={styles.text}>DPI del denunciante: {alert.DPIDenunciente}</Text>
-                                <Text style={styles.text}>Teléfono del denunciante: {alert.telefonoDenunciante}</Text>
-                                <Text style={styles.text}>Email del denunciante: {alert.emailDenunciante}</Text>
-                                <Text style={styles.text}>Parentesco del denunciante: {alert.parentescoDenunciante}</Text>
-                                <Text style={styles.text}>Edad del denunciante: {alert.edadDenunciante}</Text>
-                                <Text style={styles.text}>Dirección de vivienda del denunciante: {alert.direccionViviendaDenunciante}</Text>
-                                <Text style={styles.text}>Sexo del denunciante: {alert.sexoDenunciante}</Text>
                             </View>
                         </View>
                     ))}
                 </ScrollView>
             )
+        } else {
+            return <Text>No se encontraron alertas.</Text>
         }
     }
 
@@ -91,16 +60,23 @@ const styles = StyleSheet.create({
         padding: 20,
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: 'red',
     },
     title1: {
         fontSize: 30,
         fontWeight: 'bold',
-        marginBottom: 10,
+        marginBottom: 5,
+        color: 'white',
+        fontFamily: 'concert one',
     },
     title2: {
-        fontSize: 20,
+        fontSize: 25,
         fontWeight: 'bold',
         marginBottom: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        display: 'flex',
+        fontFamily: 'concert one',
     },
     card: {
         backgroundColor: '#fff',
@@ -109,13 +85,28 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         elevation: 3,
     },
+    imageAndDataContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 5,
+    },
     image: {
-        width: 100,
-        height: 100,
-        marginBottom: 10,
+        width: 150,
+        height: 200,
+        marginBottom: 5,
+        marginRight: 5,
+    },
+    textContainer: {
+        flex: 2,
     },
     text: {
-        fontSize: 16,
+        fontSize: 13,
         marginBottom: 5,
+    },
+    textName: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginBottom: 5,
+        fontFamily: 'concert one',
     },
 })

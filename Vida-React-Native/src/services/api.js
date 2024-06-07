@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const apiClient = axios.create({
-    //baseURL: 'http://192.168.1.28:2880', para telefono
+    //baseURL: 'http://192.168.102.110:2880',
     baseURL: 'http://localhost:2880',
     timeout: 5000
 })

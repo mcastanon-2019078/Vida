@@ -9,7 +9,7 @@ export const useGetAlertas = () => {
             const response = await getAlertRequest()
             if (response.error) {
                 alert(
-                    response.err.response.data.message ||
+                    response.error.response.data.message ||
                     'Error al obtener los Alertas'
                 )
             } else {

@@ -10,7 +10,7 @@ const apiUrl = axios.create({
 // Agregar alerta
 export const saveAlertaRequest = async (alerta) => {
     try {
-        const response = await apiUrl.post('/save', alerta);
+        const response = await apiUrl.post('/save',  alerta);
         return response.data;
     } catch (error) {
         return {

@@ -1,21 +1,62 @@
 'use strict'
 import Alerta from './alerta.model.js'
+import path from 'path'
+import Imagen from './alerta.model.js'
+import { fileURLToPath } from 'url'
+import fs from 'fs'
+
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+const uploadDir = path.join(__dirname, '../public/uploads')
+
+
 
 export const save = async (req, res) => {
     try {
         let data = req.body;
-        if (req.file) {
-            data.fotoDesaparecido = req.file.buffer.toString('base64');
-        }
+        const validacion = validar(req.file, 'Y')
+        if (validacion == '') {
+            const imagen = new Imagen({
+                nombresDesaparecido: data.nombresDesaparecido,
+                apellidosDesaparecido: data.apellidosDesaparecido,
+                edadDesaparecido : data.edadDesaparecido,
+                estaturaDesaparecido : data.estaturaDesaparecido,
+                descripcionDesaparecido : data.descripcionDesaparecido,
+                direccionVivienda : data.direccionVivienda,
+                direccionDesaparicion : data.direccionDesaparicion,
+                fechaDesaparicion : data.fechaDesaparicion,
+                sexoDesaparecido : data.sexoDesaparecido,
+                fotoDesaparecido : req.file.filename,
+                nombresDenunciante: data.nombresDenunciante,
+                apellidosDenunciante : data.apellidosDenunciante,
+                DPIDenunciente : data.DPIDenunciente,
+                telefonoDenunciante : data.telefonoDenunciante,
+                emailDenunciante : data.emailDenunciante,
+                parentescoDenunciante : data.parentescoDenunciante,
+                edadDenunciante : data.edadDenunciante,
+                direccionViviendaDenunciante : data.direccionViviendaDenunciante,
+                sexoDenunciante : data.sexoDenunciante,
+                estadoAlerta : data.estadoAlerta
 
-        let alerta = new Alerta(data);
-        await alerta.save();
-        return res.send({ message: 'Alert saved successfully' });
+
+
+
+            })
+            await imagen.save()
+            return res.send({message: 'Alert saved successfully'})
+        }
+        return res.status(400).send({message: 'Error saving alert'})
     } catch (error) {
         console.error(error);
-        return res.status(500).send({ message: 'Error saving alert' });
+        return res.status(500).send({ message: 'Error server' });
     }
+
+
 }
+
+
 
 export const get = async (req, res) => {
     try {
@@ -73,4 +114,22 @@ export const search = async (req, res) => {
         console.error(error)
         return res.status(500).send({ message: 'Error gettin alert' })
     }
+}
+
+
+
+const validar = (imagen,sevsalida) =>{
+    var errors = []
+    if(sevsalida === 'Y' && !imagen){
+        errors.push('Selecciona una imagen en formato jpg o png')
+    }else{
+        if (errors.length === 0) {
+            let filePath = path.join(uploadDir, imagen.filename);
+            if (fs.existsSync(filePath)) {
+                fs.unlinkSync(filePath);
+                return ''
+            }
+        }
+    }
+    return errors
 }

@@ -5,6 +5,6 @@ import { Estadisticas } from './src/components/Estadisticas.jsx'
 
 export default function App() {
   return (
-    <Estadisticas/>
+    <Maps/>
   )
 }

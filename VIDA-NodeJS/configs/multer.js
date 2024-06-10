@@ -49,12 +49,12 @@ const filtro = (req, file, cb) => {
 
 
 //Configurar multer 
- const upload = multer({
+ export const upload = multer({
     storage: guardar,
-    fileFilter: filtro
+   // fileFilter: filtro
 
 })
 
 
-export default upload
+
 

@@ -2,7 +2,7 @@
 
 import { Router } from "express"
 import { save, get, update, deleteAlert, search } from "./alerta.controller.js"
-import upload from "../../configs/multer.js"
+import {upload}  from "../../configs/multer.js"
 const api = Router()
 
 api.post('/save', upload.single('fotoDesaparecido'), save)

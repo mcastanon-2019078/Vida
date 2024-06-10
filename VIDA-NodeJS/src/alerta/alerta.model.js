@@ -9,7 +9,7 @@ const alertaSchema = Schema({
     },
     apellidosDesaparecido: {
         type: String,
-        required: true
+      required: true
     },
     edadDesaparecido: {
         type: Number,
@@ -55,7 +55,7 @@ const alertaSchema = Schema({
     },
     DPIDenunciente: {
         type: String,
-        required: true
+       required: true
     },
     telefonoDenunciante: {
         type: String,
@@ -87,7 +87,7 @@ const alertaSchema = Schema({
     estadoAlerta: {
         type: String,
         enum: ['Encontrado', 'Desaparecido'],
-       required: true
+    required: true
     }
         
 })

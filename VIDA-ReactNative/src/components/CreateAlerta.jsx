@@ -1,32 +1,13 @@
 import React, { useState } from 'react';
-import { Alert, View, Text, TextInput, TouchableOpacity, Picker, StyleSheet, ScrollView, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Picker, StyleSheet, ScrollView, Image } from 'react-native';
 import { useAlerta } from '../../hooks/useAlerta.jsx';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as ImagePicker from 'expo-image-picker';
-import axios from 'axios';
 import { saveAlertaRequest } from '../../services/api.js';
 
-
-//const forData
-/*
- const [formData, setFormData] = useState({
-    nombre: '',
-    direccion: '',
-    telefono: '',
-    descripcion: '',
-    imagen: '',
-    categoria: '',
-    favorito: []
-  })
-
-*/
 const CreateAlerta = () => {
     const { addAlerta, isLoading } = useAlerta();
-    const [previewUri, setPreviewUri] = useState('');
-const [fileName, setFileName] = useState('');
-    const [alerta, setAlerta] = useState({
-
-        
+    const [alerta, setAlerta, setFormData] = useState({
         nombresDesaparecido: '',
         apellidosDesaparecido: '',
         edadDesaparecido: '',
@@ -36,7 +17,7 @@ const [fileName, setFileName] = useState('');
         direccionDesaparicion: '',
         fechaDesaparicion: '',
         sexoDesaparecido: '',
-        fotoDesaparecido: null,
+        fotoDesaparecido: '',
         nombresDenunciante: '',
         apellidosDenunciante: '',
         DPIDenunciente: '',
@@ -47,104 +28,71 @@ const [fileName, setFileName] = useState('');
         direccionViviendaDenunciante: '',
         sexoDenunciante: '',
         estadoAlerta: ''
+    });
 
-
-        
-    })
-
-
- 
-   
+    const [previewUri, setPreviewUri] = useState('');
+    const [fileName, setFileName] = useState('');
+    const [image, setImage] = useState(null);
 
 
 
-
-
-    
 
     const pickImage = async () => {
+        console.log('llego')
         let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
-            base64: true
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+          
+          
+         
         });
+           console.log(result)
+        if (!result.canceled  ) {
+           
+          //const fileUri = result.uri;
+        //  const fileName = fileUri.split('/').pop();
+          //setFileName(fileName);
+          setAlerta({ ...alerta, fotoDesaparecido: result.assets[0] })
+       
+        } 
+        
 
+    }  
 
+    
 
-        if (!result.canceled && result.uri) {
-            setAlerta({ ...alerta, fotoDesaparecido: result.base64 })
-            setPreviewUri(result.uri)
-            console.log(result)
-            const fileName = result.uri.split('/').pop()
-           // uploadImage(result.base64)
-
-           await uploadImage(result.uri);
-            
+    const handleFileChange = (e) => {
+        if (e.target.files) {
+          setFile(e.target.files[0]);
         }
-    
-       /* if (! result.uri) {
-            setPreviewUri(result.uri);
-            // Llamar a la función para subir la imagen
-            uploadImage(result.base64);
-        }*/
-
-
-
-
-        const uploadImage = async (uri) => {
-            let filename = uri.split('/').pop();
-            let match = /\.(\w+)$/.exec(filename);
-            let type = match ? `image/${match[1]}` : `image`;
-        
-            let formData = new FormData();
-            formData.append('fotoDesaparecido', { uri, name: filename, type });
-        
-            try {
-                const response = await fetch('http://localhost:2880/save',  {
-                    method: 'POST',formData,
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                    body: formData,
-                });
-        
-                if (!response.ok) {
-                    throw new Error('Error en la carga de la imagen');
-                }
-        
-                const data = await response.json();
-                console.log('Imagen subida con éxito:', data);
-            } catch (error) {
-                console.error('Error al subir la imagen:', error);
-            }
-        };
-        
-        
-    }
-
-
-    
-  
-      //
-    const handleFileChange = (e)=>{
-        setFormData((prevData)=>({
-          ...prevData,
-          [e.target.name]: e.target.files[0]
-        }))
       }
 
+
+
+      const pickImage6 = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+        });
+      
+        if (!result.canceled) {
+            console.log(result.assets[0]);
+          } else {
+            alert('You did not select any image.');
+          }
+      };
+
+
+
+
     
 
-
-
-
-
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-        await addAlerta(alerta);
-        
+    const handleSubmit = async () => {
+        const response = await saveAlertaRequest(alerta);
         setAlerta({
             nombresDesaparecido: '',
             apellidosDesaparecido: '',
@@ -259,17 +207,9 @@ const [fileName, setFileName] = useState('');
             </View>
             <View style={styles.inputGroup}>
                 <Text style={styles.label}>Foto Desaparecido</Text>
-          
-                <TouchableOpacity 
-                    onPress={pickImage} 
-                    style={styles.imagePicker} 
-                    value={alerta.fotoDesaparecido}
-                    name='imagen'
-                >
-                
-                    <Text style={styles.imagePickerText }>Seleccionar Imagen</Text>
+                <TouchableOpacity onPress={pickImage} style={styles.imagePicker}>
+                    <Text style={styles.imagePickerText}>Seleccionar Imagen</Text>
                 </TouchableOpacity>
-                
                 {fileName ? (
                     <Text style={styles.fileName}>{fileName}</Text>
                 ) : null}

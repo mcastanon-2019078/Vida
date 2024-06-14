@@ -4,6 +4,7 @@ import cors from 'cors'
 import helmet from 'helmet'
 import morgan from 'morgan'
 import { config } from 'dotenv'
+import alertRoutes from '../src/alerta/alerta.routes.js'
 
 //Configuration
 const app = express()
@@ -21,9 +22,9 @@ app.use(helmet()) //Seguridad
 app.use(morgan('dev'))
 
 //Routes
+app.use('/alert', alertRoutes)
 
 //Levantamos el servidor
-
 export const initServer = () => {
     app.listen(port)
     console.log(`Server HTTP running in port ${port}`)

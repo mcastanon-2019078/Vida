@@ -2,10 +2,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import React, { useEffect, useState } from 'react'
 import { View, StyleSheet, Dimensions, Keyboard } from 'react-native'
 import HomeScreen from '../HomeScreen.jsx'
-import { AlertClient } from '../AlertClient.jsx'
+import AlertClient from '../AlertClient.jsx'
 import { Maps } from '../Maps.jsx'
 import { Ionicons } from '@expo/vector-icons'
-import CreateAlert from '../CreateAlert.jsx'
+import CreateAlert from '../CreateAlerta.jsx'
 import HomeIScreen from '../HomeIScreen.jsx'
 
 const Tab = createBottomTabNavigator()

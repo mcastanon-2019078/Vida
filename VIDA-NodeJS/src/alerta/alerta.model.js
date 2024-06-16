@@ -32,7 +32,7 @@ const alertaSchema = Schema({
         required: true
     },
     fechaDesaparicion: {
-        type: Date,
+        type: String, /* edité esto para prueba*/
         required: true
     },
     sexoDesaparecido: {
@@ -41,8 +41,10 @@ const alertaSchema = Schema({
         required: true
     },
     fotoDesaparecido: {
-        type: Buffer
+        type: String,
+        required: true
     },
+
     nombresDenunciante: {
         type: String,
         required: true
@@ -51,7 +53,7 @@ const alertaSchema = Schema({
         type: String,
         required: true
     },
-    DPIDenunciente: {
+    DPIDenunciante: {
         type: String,
         required: true
     },
@@ -80,11 +82,14 @@ const alertaSchema = Schema({
         enum: ['Masculino', 'Femenino'],
         required: true
     },
+
+
     estadoAlerta: {
         type: String,
-        enum: ['Encontrado', 'Desaparecido'],
+        enum: ['Inactiva', 'Activa'],
         required: true
     }
+
 })
 
 export default model('alerta', alertaSchema)

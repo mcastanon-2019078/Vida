@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { getAlertRequest } from '../../../services/api.js'
+import { getAlertRequest } from '../services/api.js'
 
 export const useGetAlertas = () => {
     const [alerts, setAlerts] = useState(null)
@@ -9,7 +9,7 @@ export const useGetAlertas = () => {
             const response = await getAlertRequest()
             if (response.error) {
                 alert(
-                    response.response?.data?.message ||
+                    response.error.response.data.message ||
                         'Error al obtener los Alertas'
                 )
             } else {

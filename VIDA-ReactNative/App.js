@@ -2,16 +2,15 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
 import WelcomeScreen from './src/components/WelcomeScreen.jsx'
-import { AlertClient } from './src/components/AlertClient.jsx'
+import AlertClient from './src/components/AlertClient.jsx';
 import { Maps } from './src/components/Maps.jsx'
 import TabNavigation from './src/components/navigations/TabNavigation.jsx'
 import HomeScreen from './src/components/HomeScreen.jsx'
-import CreateAlert from './src/components/CreateAlert.jsx'
+import CreateAlert from './src/components/CreateAlerta.jsx'
 import Ourhistory from './src/components/OurhistoryScreen.jsx'
 import OurWork from './src/components/OurworkScreen.jsx'
 import ActiveAlert from './src/components/questions/ActiveteAlertScreen.jsx'
 import DisableAlert from './src/components/questions/DisableAlertScreen.jsx'
-import SearchAlert from './src/components/questions/SearchAlertScreen.jsx'
 
 const Stack = createNativeStackNavigator();
 
@@ -34,7 +33,6 @@ const App = () => {
         {/* Preguntas */}
         <Stack.Screen name="ActiveAlert" component={ActiveAlert} />
         <Stack.Screen name="DisableAlert" component={DisableAlert} />
-        <Stack.Screen name="SearchAlert" component={SearchAlert} />
 
       </Stack.Navigator>
     </NavigationContainer>

@@ -1,5 +1,12 @@
 import React, { useCallback, useEffect } from 'react'
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
+import {
+    StyleSheet,
+    Text,
+    View,
+    Image,
+    TouchableOpacity,
+    ScrollView,
+} from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { useFonts } from 'expo-font'
 import * as SplashScreen from 'expo-splash-screen'
@@ -31,7 +38,7 @@ const WelcomeScreen = () => {
     if (!fontsLoaded) return null
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <Image
                 source={require('../../assets/img/Welcome.png')}
                 style={styles.image}
@@ -50,7 +57,7 @@ const WelcomeScreen = () => {
                     <Text style={styles.buttonText}>Continuar</Text>
                 </TouchableOpacity>
             </View>
-        </View>
+        </ScrollView>
     )
 }
 

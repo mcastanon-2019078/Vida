@@ -14,7 +14,7 @@ export const connect = async()=>{
         mongoose.connection.on('disconnected', ()=> console.log('MongoDB | disconnected'))
         mongoose.connection.on('reconnected', ()=> console.log('MongoDB | reconnected to mongodb'))
 
-        return await mongoose.connect('mongodb+srv://BugBusters:b8czC5CttmLHC38s@clustervida.jx4uihv.mongodb.net/?retryWrites=true&w=majority&appName=ClusterVIDA')
+        return await mongoose.connect('mongodb://127.0.0.1:27017/VIDA')
     } catch (err) {
         console.error('Database connection failed', err)
         

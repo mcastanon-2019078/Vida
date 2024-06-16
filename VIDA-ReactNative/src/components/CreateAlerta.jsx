@@ -9,12 +9,13 @@ import {
     Image,
 } from 'react-native'
 import { Picker } from '@react-native-picker/picker'
-import { useAlert } from '../shared/hooks/alerta/useAlert.jsx'
+import { useAlerta } from '../../hooks/useAlerta.jsx'
+import DateTimePicker from '@react-native-community/datetimepicker'
 import * as ImagePicker from 'expo-image-picker'
-import { saveAlertaRequest } from '../services/api.js'
+import { saveAlertaRequest } from '../../services/api.js'
 
-const CreateAlert = () => {
-    const { addAlerta, isLoading } = useAlert()
+const CreateAlerta = () => {
+    const { addAlerta, isLoading } = useAlerta()
     const [alerta, setAlerta] = useState({
         nombresDesaparecido: '',
         apellidosDesaparecido: '',
@@ -28,7 +29,7 @@ const CreateAlert = () => {
         fotoDesaparecido: '',
         nombresDenunciante: '',
         apellidosDenunciante: '',
-        DPIDenunciente: '',
+        DPIDenunciante: '',
         telefonoDenunciante: '',
         emailDenunciante: '',
         parentescoDenunciante: '',
@@ -38,21 +39,75 @@ const CreateAlert = () => {
         estadoAlerta: '',
     })
 
+    const [error, setError] = useState({})
     const [previewUri, setPreviewUri] = useState('')
     const [fileName, setFileName] = useState('')
     const [image, setImage] = useState(null)
 
     const pickImage = async () => {
-        console.log('llego')
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
             aspect: [4, 3],
             quality: 1,
         })
-        console.log(result)
         if (!result.canceled) {
             setAlerta({ ...alerta, fotoDesaparecido: result.assets[0] })
+        }
+    }
+
+    const handleTextEdadDesaparecido = (text) => {
+        const numericText = text.replace(/[^0-9]/g, '')
+        setAlerta({ ...alerta, edadDesaparecido: numericText })
+    }
+
+    const handleTextEdadDenunciante = (text) => {
+        const numericText = text.replace(/[^0-9]/g, '')
+        setAlerta({ ...alerta, edadDenunciante: numericText })
+    }
+
+    const handleTextEstaturaDesaparecido = (text) => {
+        const numericText = text.replace(/[^0-9.]/g, '')
+        setAlerta({ ...alerta, estaturaDesaparecido: numericText })
+    }
+
+    const handleTextChangeDpi = (text) => {
+        const numericText = text.replace(/[^0-9]/g, '')
+        setAlerta({ ...alerta, DPIDenunciante: numericText })
+    }
+
+    const handleTextChangeTelefono = (text) => {
+        const numericText = text.replace(/[^0-9]/g, '')
+        setAlerta({ ...alerta, telefonoDenunciante: numericText })
+    }
+
+    const handleBlur = (field) => {
+        if (!alerta[field]) {
+            setError((prevError) => ({
+                ...prevError,
+                [field]: `Este es un campo requerido`,
+            }))
+        } else {
+            setError((prevError) => ({
+                ...prevError,
+                [field]: '',
+            }))
+        }
+
+        if (field === 'DPIDenunciante' && alerta.DPIDenunciante.length !== 13) {
+            setError((prevError) => ({
+                ...prevError,
+                DPIDenunciante: 'El DPI debe contener exactamente 13 números.',
+            }))
+        } else if (
+            field === 'telefonoDenunciante' &&
+            alerta.telefonoDenunciante.length !== 8
+        ) {
+            setError((prevError) => ({
+                ...prevError,
+                telefonoDenunciante:
+                    'El teléfono debe contener exactamente 8 números.',
+            }))
         }
     }
 
@@ -92,7 +147,7 @@ const CreateAlert = () => {
             fotoDesaparecido: '',
             nombresDenunciante: '',
             apellidosDenunciante: '',
-            DPIDenunciente: '',
+            DPIDenunciante: '',
             telefonoDenunciante: '',
             emailDenunciante: '',
             parentescoDenunciante: '',
@@ -111,7 +166,6 @@ const CreateAlert = () => {
                 source={require('../../assets/img/CreateAlert.png')}
                 style={styles.imageTop}
             />
-
             <View style={styles.inputWrapper}>
                 <Text style={styles.title1}>Datos del Desaparecido</Text>
                 <Text style={styles.label}>Nombres Desaparecido</Text>
@@ -123,7 +177,13 @@ const CreateAlert = () => {
                             setAlerta({ ...alerta, nombresDesaparecido: text })
                         }
                         selectionColor="#814EDA"
+                        onBlur={() => handleBlur('nombresDesaparecido')}
                     />
+                    {error.nombresDesaparecido ? (
+                        <Text style={styles.error}>
+                            {error.nombresDesaparecido}
+                        </Text>
+                    ) : null}
                 </View>
             </View>
             <View style={styles.inputWrapper}>
@@ -139,7 +199,13 @@ const CreateAlert = () => {
                             })
                         }
                         selectionColor="#814EDA"
+                        onBlur={() => handleBlur('apellidosDesaparecido')}
                     />
+                    {error.apellidosDesaparecido ? (
+                        <Text style={styles.error}>
+                            {error.apellidosDesaparecido}
+                        </Text>
+                    ) : null}
                 </View>
             </View>
             <View style={styles.inputWrapper}>
@@ -148,11 +214,16 @@ const CreateAlert = () => {
                     <TextInput
                         style={styles.textInput}
                         value={alerta.edadDesaparecido}
-                        onChangeText={(text) =>
-                            setAlerta({ ...alerta, edadDesaparecido: text })
-                        }
+                        keyboardType="numeric"
+                        onChangeText={handleTextEdadDesaparecido}
+                        onBlur={() => handleBlur('edadDesaparecido')}
                         selectionColor="#814EDA"
                     />
+                    {error.edadDesaparecido ? (
+                        <Text style={styles.error}>
+                            {error.edadDesaparecido}
+                        </Text>
+                    ) : null}
                 </View>
             </View>
             <View style={styles.inputWrapper}>
@@ -161,11 +232,16 @@ const CreateAlert = () => {
                     <TextInput
                         style={styles.textInput}
                         value={alerta.estaturaDesaparecido}
-                        onChangeText={(text) =>
-                            setAlerta({ ...alerta, estaturaDesaparecido: text })
-                        }
+                        keyboardType="numeric"
+                        onChangeText={handleTextEstaturaDesaparecido}
+                        onBlur={() => handleBlur('estaturaDesaparecido')}
                         selectionColor="#814EDA"
                     />
+                    {error.estaturaDesaparecido ? (
+                        <Text style={styles.error}>
+                            {error.estaturaDesaparecido}
+                        </Text>
+                    ) : null}
                 </View>
             </View>
             <View style={styles.inputWrapper}>
@@ -181,7 +257,13 @@ const CreateAlert = () => {
                             })
                         }
                         selectionColor="#814EDA"
+                        onBlur={() => handleBlur('descripcionDesaparecido')}
                     />
+                    {error.descripcionDesaparecido ? (
+                        <Text style={styles.error}>
+                            {error.descripcionDesaparecido}
+                        </Text>
+                    ) : null}
                 </View>
             </View>
             <View style={styles.inputWrapper}>
@@ -193,8 +275,14 @@ const CreateAlert = () => {
                         onChangeText={(text) =>
                             setAlerta({ ...alerta, direccionVivienda: text })
                         }
+                        onBlur={() => handleBlur('direccionVivienda')}
                         selectionColor="#814EDA"
                     />
+                    {error.direccionVivienda ? (
+                        <Text style={styles.error}>
+                            {error.direccionVivienda}
+                        </Text>
+                    ) : null}
                 </View>
             </View>
             <View style={styles.inputWrapper}>
@@ -209,8 +297,14 @@ const CreateAlert = () => {
                                 direccionDesaparicion: text,
                             })
                         }
+                        onBlur={() => handleBlur('direccionDesaparicion')}
                         selectionColor="#814EDA"
                     />
+                    {error.direccionDesaparicion ? (
+                        <Text style={styles.error}>
+                            {error.direccionDesaparicion}
+                        </Text>
+                    ) : null}
                 </View>
             </View>
             <View style={styles.inputWrapper}>
@@ -222,8 +316,14 @@ const CreateAlert = () => {
                         onChangeText={(text) =>
                             setAlerta({ ...alerta, fechaDesaparicion: text })
                         }
+                        onBlur={() => handleBlur('fechaDesaparicion')}
                         selectionColor="#814EDA"
                     />
+                    {error.fechaDesaparicion ? (
+                        <Text style={styles.error}>
+                            {error.fechaDesaparicion}
+                        </Text>
+                    ) : null}
                 </View>
             </View>
             <View style={styles.inputWrapper}>
@@ -231,25 +331,24 @@ const CreateAlert = () => {
                 <View style={styles.inputGroup}>
                     <Picker
                         selectedValue={alerta.sexoDesaparecido}
-                        style={styles.picker}
                         onValueChange={(itemValue) =>
                             setAlerta({
                                 ...alerta,
                                 sexoDesaparecido: itemValue,
                             })
                         }
+                        onBlur={() => handleBlur('sexoDesaparecido')}
+                        style={styles.picker}
                     >
-                        <Picker.Item label="Seleccione..." value="" />
+                        <Picker.Item label="Seleccionar Sexo" value="" />
                         <Picker.Item label="Masculino" value="Masculino" />
                         <Picker.Item label="Femenino" value="Femenino" />
-                        <Picker.Item label="Machete" value="Machete" />
-                        <Picker.Item label="Alejandro" value="Alejandro" />
-                        <Picker.Item label="No binario" value="No binario" />
-                        <Picker.Item
-                            label="Prefiero no decirlo"
-                            value="Prefiero no decirlo"
-                        />
                     </Picker>
+                    {error.sexoDesaparecido ? (
+                        <Text style={styles.errorP}>
+                            {error.sexoDesaparecido}
+                        </Text>
+                    ) : null}
                 </View>
             </View>
             <View style={styles.inputWrapper}>
@@ -263,13 +362,11 @@ const CreateAlert = () => {
                             Seleccionar Imagen
                         </Text>
                     </TouchableOpacity>
-                    {fileName ? (
-                        <Text style={styles.fileName}>{fileName}</Text>
-                    ) : null}
-                    {previewUri ? (
+
+                    {alerta.fotoDesaparecido ? (
                         <Image
-                            source={{ uri: previewUri }}
-                            style={styles.image}
+                            source={{ uri: alerta.fotoDesaparecido.uri }}
+                            style={styles.imagePreview}
                         />
                     ) : null}
                 </View>
@@ -284,8 +381,14 @@ const CreateAlert = () => {
                         onChangeText={(text) =>
                             setAlerta({ ...alerta, nombresDenunciante: text })
                         }
+                        onBlur={() => handleBlur('nombresDenunciante')}
                         selectionColor="#814EDA"
                     />
+                    {error.nombresDenunciante ? (
+                        <Text style={styles.error}>
+                            {error.nombresDenunciante}
+                        </Text>
+                    ) : null}
                 </View>
             </View>
             <View style={styles.inputWrapper}>
@@ -297,8 +400,14 @@ const CreateAlert = () => {
                         onChangeText={(text) =>
                             setAlerta({ ...alerta, apellidosDenunciante: text })
                         }
+                        onBlur={() => handleBlur('apellidosDenunciante')}
                         selectionColor="#814EDA"
                     />
+                    {error.apellidosDenunciante ? (
+                        <Text style={styles.error}>
+                            {error.apellidosDenunciante}
+                        </Text>
+                    ) : null}
                 </View>
             </View>
             <View style={styles.inputWrapper}>
@@ -306,12 +415,14 @@ const CreateAlert = () => {
                 <View style={styles.inputGroup}>
                     <TextInput
                         style={styles.textInput}
-                        value={alerta.DPIDenunciente}
-                        onChangeText={(text) =>
-                            setAlerta({ ...alerta, DPIDenunciente: text })
-                        }
-                        selectionColor="#814EDA"
+                        value={alerta.DPIDenunciante}
+                        keyboardType="numeric"
+                        onChangeText={handleTextChangeDpi}
+                        onBlur={() => handleBlur('DPIDenunciante')}
                     />
+                    {error.DPIDenunciante ? (
+                        <Text style={styles.error}>{error.DPIDenunciante}</Text>
+                    ) : null}
                 </View>
             </View>
             <View style={styles.inputWrapper}>
@@ -320,11 +431,16 @@ const CreateAlert = () => {
                     <TextInput
                         style={styles.textInput}
                         value={alerta.telefonoDenunciante}
-                        onChangeText={(text) =>
-                            setAlerta({ ...alerta, telefonoDenunciante: text })
-                        }
+                        keyboardType="numeric"
+                        onChangeText={handleTextChangeTelefono}
+                        onBlur={() => handleBlur('telefonoDenunciante')}
                         selectionColor="#814EDA"
                     />
+                    {error.telefonoDenunciante ? (
+                        <Text style={styles.error}>
+                            {error.telefonoDenunciante}
+                        </Text>
+                    ) : null}
                 </View>
             </View>
             <View style={styles.inputWrapper}>
@@ -336,8 +452,14 @@ const CreateAlert = () => {
                         onChangeText={(text) =>
                             setAlerta({ ...alerta, emailDenunciante: text })
                         }
+                        onBlur={() => handleBlur('emailDenunciante')}
                         selectionColor="#814EDA"
                     />
+                    {error.emailDenunciante ? (
+                        <Text style={styles.error}>
+                            {error.emailDenunciante}
+                        </Text>
+                    ) : null}
                 </View>
             </View>
             <View style={styles.inputWrapper}>
@@ -352,8 +474,14 @@ const CreateAlert = () => {
                                 parentescoDenunciante: text,
                             })
                         }
+                        onBlur={() => handleBlur('parentescoDenunciante')}
                         selectionColor="#814EDA"
                     />
+                    {error.parentescoDenunciante ? (
+                        <Text style={styles.error}>
+                            {error.parentescoDenunciante}
+                        </Text>
+                    ) : null}
                 </View>
             </View>
             <View style={styles.inputWrapper}>
@@ -362,11 +490,16 @@ const CreateAlert = () => {
                     <TextInput
                         style={styles.textInput}
                         value={alerta.edadDenunciante}
-                        onChangeText={(text) =>
-                            setAlerta({ ...alerta, edadDenunciante: text })
-                        }
+                        keyboardType="numeric"
+                        onChangeText={handleTextEdadDenunciante}
+                        onBlur={() => handleBlur('edadDenunciante')}
                         selectionColor="#814EDA"
                     />
+                    {error.edadDenunciante ? (
+                        <Text style={styles.error}>
+                            {error.edadDenunciante}
+                        </Text>
+                    ) : null}
                 </View>
             </View>
             <View style={styles.inputWrapper}>
@@ -381,8 +514,16 @@ const CreateAlert = () => {
                                 direccionViviendaDenunciante: text,
                             })
                         }
+                        onBlur={() =>
+                            handleBlur('direccionViviendaDenunciante')
+                        }
                         selectionColor="#814EDA"
                     />
+                    {error.direccionViviendaDenunciante ? (
+                        <Text style={styles.error}>
+                            {error.direccionViviendaDenunciante}
+                        </Text>
+                    ) : null}
                 </View>
             </View>
             <View style={styles.inputWrapper}>
@@ -394,18 +535,17 @@ const CreateAlert = () => {
                         onValueChange={(itemValue) =>
                             setAlerta({ ...alerta, sexoDenunciante: itemValue })
                         }
+                        onBlur={() => handleBlur('sexoDenunciante')}
                     >
-                        <Picker.Item label="Seleccione..." value="" />
+                        <Picker.Item label="Seleccionar Sexo" value="" />
                         <Picker.Item label="Masculino" value="Masculino" />
                         <Picker.Item label="Femenino" value="Femenino" />
-                        <Picker.Item label="Machete" value="Machete" />
-                        <Picker.Item label="Alejandro" value="Alejandro" />
-                        <Picker.Item label="No binario" value="No binario" />
-                        <Picker.Item
-                            label="Prefiero no decirlo"
-                            value="Prefiero no decirlo"
-                        />
                     </Picker>
+                    {error.sexoDenunciante ? (
+                        <Text style={styles.errorP}>
+                            {error.sexoDenunciante}
+                        </Text>
+                    ) : null}
                 </View>
             </View>
             <View style={styles.inputWrapper}>
@@ -413,22 +553,30 @@ const CreateAlert = () => {
                 <View style={styles.inputGroup}>
                     <Picker
                         selectedValue={alerta.estadoAlerta}
-                        style={styles.picker}
                         onValueChange={(itemValue) =>
                             setAlerta({ ...alerta, estadoAlerta: itemValue })
                         }
+                        onBlur={() => handleBlur('estadoAlerta')}
+                        style={styles.picker}
                     >
-                        <Picker.Item label="Seleccione..." value="" />
-                        <Picker.Item label="Encontrado" value="Encontrado" />
-                        <Picker.Item
-                            label="Desaparecido"
-                            value="Desaparecido"
-                        />
+                        <Picker.Item label="Seleccionar Estado" value="" />
+                        <Picker.Item label="Activa" value="Activa" />
+                        <Picker.Item label="Inactiva" value="Inactiva" />
                     </Picker>
+                    {error.estadoAlerta ? (
+                        <Text style={styles.errorP}>{error.estadoAlerta}</Text>
+                    ) : null}
                 </View>
             </View>
-            <TouchableOpacity onPress={handleSubmit} style={styles.button}>
-                <Text style={styles.buttonText}>Guardar</Text>
+
+            <TouchableOpacity
+                onPress={handleSubmit}
+                style={styles.button}
+                disabled={isLoading}
+            >
+                <Text style={styles.buttonText}>
+                    {isLoading ? 'Agregando...' : 'Agregar Alerta'}
+                </Text>
             </TouchableOpacity>
         </ScrollView>
     )
@@ -459,6 +607,7 @@ const styles = StyleSheet.create({
         paddingTop: 15,
         paddingLeft: 20,
         paddingRight: 20,
+        marginBottom: 10, // Agrega margen inferior para separar los inputs
         fontFamily: 'Outfit',
     },
     textInput: {
@@ -532,6 +681,17 @@ const styles = StyleSheet.create({
         height: 100,
         marginTop: 10,
     },
+    error: {
+        color: 'red',
+        marginTop: 15,
+        marginBottom: -6,
+        fontFamily: 'Outfit',
+    },
+    errorP: {
+        color: 'red',
+        marginTop: 1,
+        fontFamily: 'Outfit',
+    },
 })
 
-export default CreateAlert
+export default CreateAlerta

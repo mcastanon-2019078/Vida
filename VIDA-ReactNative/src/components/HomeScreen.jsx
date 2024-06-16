@@ -1,4 +1,11 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
+import {
+    StyleSheet,
+    Text,
+    View,
+    Image,
+    TouchableOpacity,
+    ScrollView,
+} from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import React from 'react'
 import { Ionicons } from '@expo/vector-icons'
@@ -7,10 +14,16 @@ const HomeScreen = () => {
     const navigation = useNavigation()
 
     const handleHome = () => {
-        navigation.navigate('CreateAlert')
+        navigation.navigate('HomeD')
+    }
+    const handleAlertClient = () => {
+        navigation.navigate('AlertClient')
+    }
+    const handleCreateAlerta = () => {
+        navigation.navigate('CreateAlerta')
     }
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <Image
                 source={require('../../assets/img/Welcome.png')}
                 style={styles.image}
@@ -24,21 +37,27 @@ const HomeScreen = () => {
                     </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={handleHome} style={styles.button}>
+                <TouchableOpacity
+                    onPress={handleAlertClient}
+                    style={styles.button}
+                >
                     <View style={styles.buttonText}>
                         <Ionicons name="search" size={35} color="white" />
                         <Text style={styles.buttonText}>Buscar Alertas</Text>
                     </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={handleHome} style={styles.button}>
+                <TouchableOpacity
+                    onPress={handleCreateAlerta}
+                    style={styles.button}
+                >
                     <View style={styles.buttonText}>
                         <Ionicons name="alert-circle" size={35} color="white" />
                         <Text style={styles.buttonText}> Activar Alerta</Text>
                     </View>
                 </TouchableOpacity>
             </View>
-        </View>
+        </ScrollView>
     )
 }
 

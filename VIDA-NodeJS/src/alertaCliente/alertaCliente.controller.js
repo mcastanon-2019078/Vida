@@ -1,7 +1,7 @@
 'use strict'
-import Alerta from './alerta.model.js'
+import Alerta from './alertaCliente.model.js'
 import path from 'path'
-import Imagen from './alerta.model.js'
+import Imagen from './alertaCliente.model.js'
 import { fileURLToPath } from 'url'
 import fs from 'fs'
 
@@ -12,20 +12,20 @@ const __dirname = path.dirname(__filename)
 const uploadDir = path.join(__dirname, '../public/uploads')
 
 
- 
+
 
 //Recibe todos los campos menos la imagen
 export const save = async (req, res) => {
     //console.log(req.body)
-   // return res.send({ message: req.body });
-    
-    
-        try {
-            let data = req.body;
-           if (data) {
-                data.fotoDesaparecido = req.body.fotoDesaparecido.uri
-            }
-            console.log(data)
+    // return res.send({ message: req.body });
+
+
+    try {
+        let data = req.body;
+        if (data) {
+            data.fotoDesaparecido = req.body.fotoDesaparecido.uri
+        }
+        console.log(data)
         let alerta = new Alerta(data)
         await alerta.save();
         return res.send({ message: 'Alert saved successfully' });
@@ -50,32 +50,32 @@ export const save5 = async (req, res) => {
             const imagen = new Imagen({
                 nombresDesaparecido: data.nombresDesaparecido,
                 apellidosDesaparecido: data.apellidosDesaparecido,
-                edadDesaparecido : data.edadDesaparecido,
-                estaturaDesaparecido : data.estaturaDesaparecido,
-                descripcionDesaparecido : data.descripcionDesaparecido,
-                direccionVivienda : data.direccionVivienda,
-                direccionDesaparicion : data.direccionDesaparicion,
-                fechaDesaparicion : data.fechaDesaparicion,
-                sexoDesaparecido : data.sexoDesaparecido,
-                fotoDesaparecido : data.fotoDesaparecido,
+                edadDesaparecido: data.edadDesaparecido,
+                estaturaDesaparecido: data.estaturaDesaparecido,
+                descripcionDesaparecido: data.descripcionDesaparecido,
+                direccionVivienda: data.direccionVivienda,
+                direccionDesaparicion: data.direccionDesaparicion,
+                fechaDesaparicion: data.fechaDesaparicion,
+                sexoDesaparecido: data.sexoDesaparecido,
+                fotoDesaparecido: data.fotoDesaparecido,
                 nombresDenunciante: data.nombresDenunciante,
-                apellidosDenunciante : data.apellidosDenunciante,
-                DPIDenunciente : data.DPIDenunciente,
-                telefonoDenunciante : data.telefonoDenunciante,
-                emailDenunciante : data.emailDenunciante,
-                parentescoDenunciante : data.parentescoDenunciante,
-                edadDenunciante : data.edadDenunciante,
-                direccionViviendaDenunciante : data.direccionViviendaDenunciante,
-                sexoDenunciante : data.sexoDenunciante,
-                estadoAlerta : data.estadoAlerta
+                apellidosDenunciante: data.apellidosDenunciante,
+                DPIDenunciente: data.DPIDenunciente,
+                telefonoDenunciante: data.telefonoDenunciante,
+                emailDenunciante: data.emailDenunciante,
+                parentescoDenunciante: data.parentescoDenunciante,
+                edadDenunciante: data.edadDenunciante,
+                direccionViviendaDenunciante: data.direccionViviendaDenunciante,
+                sexoDenunciante: data.sexoDenunciante,
+                estadoAlerta: data.estadoAlerta
             })
             console.log('Created new Imagen:', imagen);
             await imagen.save()
             console.log('Saved Imagen successfully');
-            return res.send({message: 'Alert saved successfully', imagen})
+            return res.send({ message: 'Alert saved successfully', imagen })
         }
         console.log('Error in validation');
-        return res.status(400).send({message: 'Error saving alert'})
+        return res.status(400).send({ message: 'Error saving alert' })
     } catch (error) {
         console.error('Error in save process:', error);
         return res.status(500).send({ message: 'Error server', validacion });
@@ -145,11 +145,11 @@ export const search = async (req, res) => {
 
 
 
-const validar = (imagen,sevsalida) =>{
+const validar = (imagen, sevsalida) => {
     var errors = []
-    if(sevsalida === 'Y' && !imagen){
+    if (sevsalida === 'Y' && !imagen) {
         errors.push('Selecciona una imagen en formato jpg o png')
-    }else{
+    } else {
         if (errors.length === 0) {
             let filePath = path.join(uploadDir, imagen.filename);
             if (fs.existsSync(filePath)) {

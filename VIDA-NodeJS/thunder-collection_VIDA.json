@@ -1,0 +1,111 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "VIDA",
+    "collectionId": "16973fde-5d25-4d74-b764-6422ddfe7380",
+    "dateExported": "2024-06-08T08:11:25.098Z",
+    "version": "1.2",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "3d0cf97d-c4bd-4a89-9d52-6d0d4bef2946",
+            "colId": "16973fde-5d25-4d74-b764-6422ddfe7380",
+            "containerId": "",
+            "name": "ALERTA",
+            "url": "localhost:2880/save",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-06-06T03:52:34.069Z",
+            "modified": "2024-06-08T08:00:07.196Z",
+            "headers": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "nombresDesaparecido",
+                        "value": "dfdfdf"
+                    },
+                    {
+                        "name": "apellidosDesaparecido",
+                        "value": "dfdfd"
+                    },
+                    {
+                        "name": "edadDesaparecido",
+                        "value": "11"
+                    },
+                    {
+                        "name": "estaturaDesaparecido",
+                        "value": "1.70"
+                    },
+                    {
+                        "name": "descripcionDesaparecido",
+                        "value": "fvfvgv"
+                    },
+                    {
+                        "name": "direccionVivienda",
+                        "value": "zona 7"
+                    },
+                    {
+                        "name": "direccionDesaparicion",
+                        "value": "zona 7"
+                    },
+                    {
+                        "name": "fechaDesaparicion",
+                        "value": "10 de mayo"
+                    },
+                    {
+                        "name": "sexoDesaparecido",
+                        "value": "Masculino"
+                    },
+                    {
+                        "name": "nombresDenunciante",
+                        "value": "Alex"
+                    },
+                    {
+                        "name": "apellidosDenunciante",
+                        "value": "pacheco"
+                    },
+                    {
+                        "name": "DPIDenunciente",
+                        "value": "12234454545454554"
+                    },
+                    {
+                        "name": "telefonoDenunciante",
+                        "value": "12345678"
+                    },
+                    {
+                        "name": "emailDenunciante",
+                        "value": "apa@gmail.com"
+                    },
+                    {
+                        "name": "parentescoDenunciante",
+                        "value": "dvcfv"
+                    },
+                    {
+                        "name": "edadDenunciante",
+                        "value": "23"
+                    },
+                    {
+                        "name": "direccionViviendaDenunciante",
+                        "value": "zona 7"
+                    },
+                    {
+                        "name": "sexoDenunciante",
+                        "value": "Masculino"
+                    },
+                    {
+                        "name": "estadoAlerta",
+                        "value": "Desaparecido"
+                    }
+                ],
+                "files": [
+                    {
+                        "name": "fotoDesaparecido",
+                        "value": "c:\\Users\\user\\Pictures\\imagen en mongo.png"
+                    }
+                ]
+            }
+        }
+    ],
+    "ref": "O_6cwwZTX4brv98oes_gL69LN7bv9L_yNEaAqEEuQoNBYdCq3OFOHk_EvbGYlrXBzlruy8tHqy8L-YOnjm66LQ"
+}

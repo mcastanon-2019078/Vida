@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, Text } from 'react-native'
 import MapView, { Marker, Callout } from 'react-native-maps'
 import axios from 'axios'
-import { getAlertRequest } from '../../services/api.js'
+import { getAlertClientRequest } from '../../services/api.js'
 
 export const Maps = () => {
     const [alerts, setAlerts] = useState([])
@@ -12,7 +12,7 @@ export const Maps = () => {
         const fetchAlerts = async () => {
             try {
                 console.log('Haciendo solicitud para obtener alertas...')
-                const response = await getAlertRequest()
+                const response = await getAlertClientRequest()
                 console.log('Respuesta recibida:', response)
                 if (
                     response &&

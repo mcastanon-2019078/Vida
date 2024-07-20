@@ -11,6 +11,15 @@ import Ourhistory from './src/components/OurhistoryScreen.jsx'
 import OurWork from './src/components/OurworkScreen.jsx'
 import ActiveAlert from './src/components/questions/ActiveteAlertScreen.jsx'
 import DisableAlert from './src/components/questions/DisableAlertScreen.jsx'
+import Estadisticas from './src/components/Estadisticas.jsx';
+import EstadisticasNoDesaparecido from './src/components/EstadisticaNoDesaparecido.jsx';
+
+import { createStackNavigator } from '@react-navigation/stack';
+import LoginScreen from './src/components/Login';
+import Toast from 'react-native-toast-message';
+import HomeAdmin from './src/components/Home';
+import RegisterScreen from './src/components/Register';
+import AlertAdmin from './src/components/AlertAdmin.jsx'
 
 const Stack = createNativeStackNavigator();
 
@@ -27,13 +36,17 @@ const App = () => {
         <Stack.Screen name="CreateAlerta" component={CreateAlert} />
         <Stack.Screen name="AlertClient" component={AlertClient} />
         <Stack.Screen name="Maps" component={Maps} />
+        <Stack.Screen name="EstadisticasNoDesaparecido" component={EstadisticasNoDesaparecido} />
         {/* Sobre Nosotros */}
         <Stack.Screen name="History" component={Ourhistory} />
         <Stack.Screen name="OurWork" component={OurWork} />
         {/* Preguntas */}
         <Stack.Screen name="ActiveAlert" component={ActiveAlert} />
         <Stack.Screen name="DisableAlert" component={DisableAlert} />
-
+        {/* Register / Login  */}
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Admin" component={AlertAdmin} />
+        <Stack.Screen name="Register" component={RegisterScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

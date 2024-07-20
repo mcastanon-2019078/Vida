@@ -7,6 +7,7 @@ import { Maps } from '../Maps.jsx'
 import { Ionicons } from '@expo/vector-icons'
 import CreateAlert from '../CreateAlerta.jsx'
 import HomeIScreen from '../HomeIScreen.jsx'
+import EstadisticasNoDesaparecido from '../EstadisticaNoDesaparecido.jsx'
 
 const Tab = createBottomTabNavigator()
 
@@ -57,6 +58,8 @@ const TabNavigation = () => {
                             iconName = focused ? 'alert' : 'alert-outline'
                         } else if (route.name === 'Maps') {
                             iconName = focused ? 'location' : 'location-outline'
+                        }else if (route.name === 'EstadisticasNoDesaparecido') {
+                            iconName = focused ? 'stats-chart' : 'stats-chart-outline'
                         }
 
                         return (
@@ -74,6 +77,8 @@ const TabNavigation = () => {
                 <Tab.Screen name="CreateAlerts" component={CreateAlert} />
                 <Tab.Screen name="SearchAlert" component={AlertClient} />
                 <Tab.Screen name="Maps" component={Maps} />
+                <Tab.Screen name="EstadisticasNoDesaparecido" component={EstadisticasNoDesaparecido} />
+
             </Tab.Navigator>
             {!isKeyboardVisible && (
                 <View style={styles.tabBarBackground} pointerEvents="none" />

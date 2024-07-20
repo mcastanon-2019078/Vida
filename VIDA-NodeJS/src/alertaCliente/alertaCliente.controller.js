@@ -1,50 +1,53 @@
 'use strict'
-import Alerta from './alerta.model.js'
-import Client from  '../alertaCliente/alertaCliente.model.js'
+import Alerta from './alertaCliente.model.js' 
 import path from 'path'
-import Imagen from './alerta.model.js'
-import { fileURLToPath } from 'url'
 import fs from 'fs'
+import { fileURLToPath } from 'url'
 
-
+// Convierte import.meta.url a una ruta de archivo
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const uploadDir = path.join(__dirname, '../public/uploads')
 
-
-
-
-//Recibe todos los campos menos la imagen
+// Recibe todos los campos y la imagen
 export const save = async (req, res) => {
-    //console.log(req.body)
-    // return res.send({ message: req.body });
     try {
-        let data = req.body;
-        if (data) {
-            data.fotoDesaparecido = req.body.fotoDesaparecido.uri
+        // Extrae los datos del cuerpo de la solicitud
+        let data = req.body
+
+        // Si se ha subido una imagen, adjunta su nombre al objeto de datos
+        if (req.file) {
+            data.fotoDesaparecido = req.file.filename // Guarda el nombre del archivo subido en los datos
         }
-        console.log(data)
+
+        // Crea una nueva instancia del modelo Alerta con los datos recibidos
         let alerta = new Alerta(data)
-        await alerta.save();
-        return res.send({ message: 'Alert saved successfully' });
+
+        // Guarda la alerta en la base de datos
+        await alerta.save()
+
+        // Envía una respuesta de éxito al cliente
+        return res.send({ message: 'Alert saved successfully', alerta })
     } catch (error) {
-        console.error(error);
-        return res.status(500).send({ message: 'Error saving alert' });
+        // Si ocurre un error, registra el error en la consola y envía una respuesta de error al cliente
+        console.error(error)
+        return res.status(500).send({ message: 'Error saving alert' })
     }
 }
+
 
 export const save5 = async (req, res) => {
     try {
         console.log('Starting save process...')
-        console.log('Request headers:', req.headers);
+        console.log('Request headers:', req.headers)
         let data = req.body;
-        console.log('Received data:', data);
+        console.log('Received data:', data)
         const validacion = validar(req.file, 'Y')
-        console.log('Validation result:', validacion);
+        console.log('Validation result:', validacion)
         if (validacion == '') {
             if (req.file) {
-                data.fotoDesaparecido = req.file.filename;
+                data.fotoDesaparecido = req.file.filename
             }
             const imagen = new Imagen({
                 nombresDesaparecido: data.nombresDesaparecido,
@@ -68,29 +71,33 @@ export const save5 = async (req, res) => {
                 sexoDenunciante: data.sexoDenunciante,
                 estadoAlerta: data.estadoAlerta
             })
-            console.log('Created new Imagen:', imagen);
+            console.log('Created new Imagen:', imagen)
             await imagen.save()
-            console.log('Saved Imagen successfully');
+            console.log('Saved Imagen successfully')
             return res.send({ message: 'Alert saved successfully', imagen })
         }
         console.log('Error in validation');
         return res.status(400).send({ message: 'Error saving alert' })
     } catch (error) {
-        console.error('Error in save process:', error);
-        return res.status(500).send({ message: 'Error server', validacion });
+        console.error('Error in save process:', error)
+        return res.status(500).send({ message: 'Error server', validacion })
     }
 }
 
 
 
-export const get = async (req, res) => {
+export const getC = async (req, res) => {
     try {
-        let alertas = await Alerta.find()
-        if (alertas.length === 0) return res.status(404).send({ message: 'There are not alerts to see' })
+        let alertas = await Alerta.find({ estadoAlerta: { $ne: 'Inactiva' } }) // Filtrar por estado activo
+
+        if (alertas.length === 0) {
+            return res.status(404).send({ message: 'No hay alertas activas para mostrar' })
+        }
+
         return res.send({ alertas })
     } catch (error) {
         console.error(error)
-        return res.status(500).send({ message: 'Error getting alerts' })
+        return res.status(500).send({ message: 'Error al obtener las alertas' })
     }
 }
 
@@ -150,9 +157,9 @@ const validar = (imagen, sevsalida) => {
         errors.push('Selecciona una imagen en formato jpg o png')
     } else {
         if (errors.length === 0) {
-            let filePath = path.join(uploadDir, imagen.filename);
+            let filePath = path.join(uploadDir, imagen.filename)
             if (fs.existsSync(filePath)) {
-                fs.unlinkSync(filePath);
+                fs.unlinkSync(filePath)
                 return ''
             }
         }
@@ -160,19 +167,20 @@ const validar = (imagen, sevsalida) => {
     return errors
 }
 
+
 //Total de personas desaparecias por genero
 export const getGenderCounts = async (req, res) => {
     try {
-        const femaleCount = await Alerta.countDocuments({ sexoDesaparecido: 'Femenino' });
-        const maleCount = await Alerta.countDocuments({ sexoDesaparecido: 'Masculino' });
+        const femaleCount = await Alerta.countDocuments({ sexoDesaparecido: 'Femenino' })
+        const maleCount = await Alerta.countDocuments({ sexoDesaparecido: 'Masculino' })
         const totalCount = femaleCount + maleCount;
-        const femalePercentage = totalCount > 0 ? (femaleCount / totalCount) * 100 : 0;
-        const malePercentage = totalCount > 0 ? (maleCount / totalCount) * 100 : 0;
+        const femalePercentage = totalCount > 0 ? (femaleCount / totalCount) * 100 : 0
+        const malePercentage = totalCount > 0 ? (maleCount / totalCount) * 100 : 0
 
         console.log({
             femalePercentage: femalePercentage.toFixed(2),
             malePercentage: malePercentage.toFixed(2),
-        });
+        })
 
         return res.status(200).json({
             femalePercentage: femalePercentage.toFixed(2),
@@ -182,7 +190,7 @@ export const getGenderCounts = async (req, res) => {
         console.error(err);
         return res.status(500).send({ message: "Error getting gender counts" });
     }
-};
+}
 
 //Total de personas desaparecidas en total
 export const getTotalCases = async(req,res)=>{
@@ -211,7 +219,7 @@ export const getStatus = async (req, res) => {
         
         // Condición para manejar cuando no hay personas desaparecidas ni encontradas
         if (notFound.length === 0 && peopleFound.length === 0) {
-            return res.status(404).send({ message: 'No se encontraron personas desaparecidas ni encontradas' });
+            return res.status(404).send({ message: 'No se encontraron personas desaparecidas ni encontradas' })
         }
 
         // Crear la respuesta con las personas desaparecidas y encontradas
@@ -223,13 +231,9 @@ export const getStatus = async (req, res) => {
         return res.status(200).send({ msg: 'Estado de personas:', ...response });
     } catch (err) {
         console.error(err);
-        return res.status(500).send({ msg: 'Error al intentar obtener el estado de las personas' });
+        return res.status(500).send({ msg: 'Error al intentar obtener el estado de las personas' })
     }
 }
-
-
-
-
 export const getDistributionByAge = async (req, res) => {
     try {
         const alertas = await Alerta.find().select('edadDesaparecido') 
@@ -259,34 +263,3 @@ export const getDistributionByAge = async (req, res) => {
     }
 }
 
-//Esta funcion actualizara cliente y administrador
-export const deactivateEntity = async (req, res) => {
-    try {
-        const { id } = req.params
-
-        // Buscar y actualizar en la colección de Alertas
-        let updatedAlerta = await Alerta.findOneAndUpdate(
-            { _id: id },
-            { estadoAlerta: 'Inactiva' },
-            { new: true }
-        );
-
-        // Buscar y actualizar en la colección de Clientes
-        let updatedCliente = await Client.findOneAndUpdate(
-            { _id: id },
-            { estadoAlerta: 'Inactiva' },
-            { new: true }
-        );
-
-        // Verificar si alguna de las actualizaciones fue exitosa
-        if (!updatedAlerta && !updatedCliente) {
-            return res.status(404).send({ msg: `Entidad con ID ${id} no encontrada o no actualizada` })
-        }
-
-        // Devolver el mensaje de éxito con las entidades actualizadas
-        return res.send({ msg: `Entidades desactivadas correctamente`, updatedAlerta, updatedCliente })
-    } catch (err) {
-        console.error(err)
-        return res.status(500).send({ msg: 'Error desactivando entidad' })
-    }
-}

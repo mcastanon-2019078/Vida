@@ -2,93 +2,92 @@
 
 import { Schema, model } from "mongoose"
 
-const alertaSchema = Schema({
+const alertaClienteSchema = Schema({
     nombresDesaparecido: {
         type: String,
-        required: true
+        //required: true
     },
     apellidosDesaparecido: {
         type: String,
-        required: true
+        //required: true
     },
     edadDesaparecido: {
         type: Number,
-        required: true
+        //required: true
     },
     estaturaDesaparecido: {
         type: Number,
-        required: true
+        //required: true
     },
     descripcionDesaparecido: {
         type: String,
-        required: true
+        //required: true
     },
     direccionVivienda: {
         type: String,
-        required: true
+        //required: true
     },
     direccionDesaparicion: {
         type: String,
-        required: true
+        //required: true
     },
     fechaDesaparicion: {
         type: String, /* edité esto para prueba*/
-        required: true
+        //required: true
     },
     sexoDesaparecido: {
         type: String,
         enum: ['Masculino', 'Femenino'],
-        required: true
+        //required: true
     },
     fotoDesaparecido: {
         type: String,
-        required: true
+        //required: true
     },
 
     nombresDenunciante: {
         type: String,
-        required: true
+        //required: true
     },
     apellidosDenunciante: {
         type: String,
-        required: true
+        //required: true
     },
     DPIDenunciante: {
         type: String,
-        required: true
+        //required: true
     },
     telefonoDenunciante: {
         type: String,
-        required: true
+        //required: true
     },
     emailDenunciante: {
         type: String,
-        required: true
+        //required: true
     },
     parentescoDenunciante: {
         type: String,
-        required: true
+        //required: true
     },
     edadDenunciante: {
         type: Number,
-        required: true
+        //required: true
     },
     direccionViviendaDenunciante: {
         type: String,
-        required: true
+        //required: true
     },
     sexoDenunciante: {
         type: String,
         enum: ['Masculino', 'Femenino'],
-        required: true
+        //required: true
     },
-
     estadoAlerta: {
         type: String,
         enum: ['Inactiva', 'Activa'],
-        required: true
+        //required: true
     }
 
 })
 
-export default model('alerta', alertaSchema)
+export default model('alertaCliente', alertaClienteSchema)

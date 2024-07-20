@@ -227,7 +227,7 @@ const CreateAlerta = () => {
                 </View>
             </View>
             <View style={styles.inputWrapper}>
-                <Text style={styles.label}>Estatura Desaparecido</Text>
+                <Text style={styles.label}>Estatura Desaparecido (m)</Text>
                 <View style={styles.inputGroup}>
                     <TextInput
                         style={styles.textInput}

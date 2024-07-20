@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import {
     View,
     Text,
@@ -8,32 +8,41 @@ import {
     ScrollView,
     TouchableOpacity,
     Modal,
-} from 'react-native'
-import { useGetAlertas } from '../../hooks/useGetAlertas.jsx'
+} from 'react-native';
+import { useGetAlertasClient } from '../../hooks/useGetAlertasClient';
+import Toast from 'react-native-toast-message';
 
 const AlertClient = () => {
-    const { alerts, isFetching, getAlerts } = useGetAlertas()
-    const [selectedAlert, setSelectedAlert] = useState(null)
+    const [selectedAlert, setSelectedAlert] = useState(null);
+    const [alertList, setAlertList] = useState([]);
+    const { alerts, isFetching, getAlertsClient } = useGetAlertasClient();
+
 
     useEffect(() => {
-        getAlerts()
-    }, [])
+        getAlertsClient()
+    }, []);
+
+    useEffect(() => {
+        if (alerts && Array.isArray(alerts.alertas)) {
+            setAlertList(alerts.alertas);
+        }
+    }, [alerts]);
 
     const handleCardPress = (alert) => {
-        setSelectedAlert(alert._id === selectedAlert ? null : alert)
-    }
+        setSelectedAlert(alert._id === selectedAlert ? null : alert);
+    };
 
     const renderAlerts = () => {
         if (isFetching) {
-            return <ActivityIndicator size="large" color="#814EDA" />
-        } else if (alerts && Array.isArray(alerts.alertas)) {
+            return <ActivityIndicator size="large" color="#814EDA" />;
+        } else if (alertList.length > 0) {
             return (
                 <ScrollView style={styles.container}>
                     <Image
                         source={require('../../assets/img/Alerts.png')}
                         style={styles.imageTop}
                     />
-                    {alerts.alertas.map((alert) => (
+                    {alertList.map((alert) => (
                         <TouchableOpacity
                             key={alert._id}
                             onPress={() => handleCardPress(alert)}
@@ -42,111 +51,77 @@ const AlertClient = () => {
                             <View style={styles.headerContainer}>
                                 <Text style={styles.urgentText}>URGENTE</Text>
                             </View>
-
                             <View style={styles.imageAndDetailsContainer}>
                                 <View style={styles.imageContainer}>
-                                    {alert.fotoDesaparecido && (
+                                    {alert.fotoDesaparecido ? (
                                         <Image
-                                            source={{
-                                                uri: alert.fotoDesaparecido,
-                                            }}
+                                            source={{ uri: alert.fotoDesaparecido }}
                                             style={styles.image}
+                                            resizeMode="cover" 
                                         />
+                                    ) : (
+                                        <Text>No hay imagen disponible</Text>
                                     )}
                                 </View>
                                 <View style={styles.detailsContainer}>
                                     <Text style={styles.name}>
-                                        {alert.nombresDesaparecido}{' '}
-                                        {alert.apellidosDesaparecido}
+                                        {alert.nombresDesaparecido} {alert.apellidosDesaparecido}
                                     </Text>
                                     <Text style={styles.infoText}>
-                                        <Text style={styles.infoTitle}>
-                                            LUGAR DE DESAPARICIÓN:{' '}
-                                        </Text>
+                                        <Text style={styles.infoTitle}>LUGAR DE DESAPARICIÓN: </Text>
                                         {alert.direccionDesaparicion}
                                     </Text>
                                     <Text style={styles.infoText}>
-                                        <Text style={styles.infoTitle}>
-                                            FECHA DE DESAPARICIÓN:{' '}
-                                        </Text>
-                                        {new Date(
-                                            alert.fechaDesaparicion
-                                        ).toLocaleDateString()}
+                                        <Text style={styles.infoTitle}>FECHA DE DESAPARICIÓN: </Text>
+                                        {new Date(alert.fechaDesaparicion).toLocaleDateString()}
                                     </Text>
                                     <Text style={styles.infoText}>
-                                        <Text style={styles.infoTitle}>
-                                            EDAD:{' '}
-                                        </Text>
+                                        <Text style={styles.infoTitle}>EDAD: </Text>
                                         {alert.edadDesaparecido} años
                                     </Text>
                                     <Text style={styles.infoText}>
-                                        <Text style={styles.infoTitle}>
-                                            GÉNERO:{' '}
-                                        </Text>
+                                        <Text style={styles.infoTitle}>GÉNERO: </Text>
                                         {alert.sexoDesaparecido}
                                     </Text>
                                     <Text style={styles.infoText}>
-                                        <Text style={styles.infoTitle}>
-                                            ESTATURA:{' '}
-                                        </Text>
+                                        <Text style={styles.infoTitle}>ESTATURA: </Text>
                                         {alert.estaturaDesaparecido} m
                                     </Text>
                                 </View>
                             </View>
-
                             <View style={styles.infoSection}>
-                                <Text style={styles.infoTitle}>
-                                    CARACTERÍSTICAS FÍSICAS Y VESTIMENTA
-                                </Text>
+                                <Text style={styles.infoTitle}>CARACTERÍSTICAS FÍSICAS Y VESTIMENTA</Text>
                                 <View style={styles.infoTable}>
                                     <View style={styles.tableRow}>
-                                        <Text style={styles.tableHeader}>
-                                            TEZ
-                                        </Text>
-                                        <Text style={styles.tableHeader}>
-                                            CABELLO
-                                        </Text>
-                                        <Text style={styles.tableHeader}>
-                                            COMPLEXIÓN
-                                        </Text>
-                                        <Text style={styles.tableHeader}>
-                                            COLOR DE OJOS
-                                        </Text>
+                                        <Text style={styles.tableHeader}>TEZ</Text>
+                                        <Text style={styles.tableHeader}>CABELLO</Text>
+                                        <Text style={styles.tableHeader}>COMPLEXIÓN</Text>
+                                        <Text style={styles.tableHeader}>COLOR DE OJOS</Text>
                                     </View>
                                     <View style={styles.tableRow}>
                                         <Text style={styles.tableCell}>
-                                            {alert.tezDesaparecido ||
-                                                'No indica'}
+                                            {alert.tezDesaparecido || 'No indica'}
                                         </Text>
                                         <Text style={styles.tableCell}>
-                                            {alert.cabelloDesaparecido ||
-                                                'Lacio, negro'}
+                                            {alert.cabelloDesaparecido || 'Lacio, negro'}
                                         </Text>
                                         <Text style={styles.tableCell}>
-                                            {alert.cabelloDesaparecido ||
-                                                'Lacio, negro'}
+                                            {alert.complexionDesaparecido || 'No indica'}
                                         </Text>
                                         <Text style={styles.tableCell}>
-                                            {alert.cabelloDesaparecido ||
-                                                'Lacio, negro'}
+                                            {alert.colorOjosDesaparecido || 'No indica'}
                                         </Text>
                                     </View>
                                     <View style={styles.tableRow}>
-                                        <Text style={styles.tableHeader}>
-                                            VESTIMENTA
-                                        </Text>
-                                        <Text style={styles.tableHeader}>
-                                            SEÑAS PARTICULARES
-                                        </Text>
+                                        <Text style={styles.tableHeader}>VESTIMENTA</Text>
+                                        <Text style={styles.tableHeader}>SEÑAS PARTICULARES</Text>
                                     </View>
                                     <View style={styles.tableRow}>
                                         <Text style={styles.tableCell}>
-                                            {alert.vestimentaDesaparecido ||
-                                                'Sudadero corinto, pants azul, zapatos negros'}
+                                            {alert.vestimentaDesaparecido || 'Sudadero corinto, pants azul, zapatos negros'}
                                         </Text>
                                         <Text style={styles.tableCell}>
-                                            {alert.senasParticularesDesaparecido ||
-                                                'No indica'}
+                                            {alert.senasParticularesDesaparecido || 'No indica'}
                                         </Text>
                                     </View>
                                 </View>
@@ -154,9 +129,15 @@ const AlertClient = () => {
                         </TouchableOpacity>
                     ))}
                 </ScrollView>
-            )
+            );
         } else {
-            return <Text>No se encontraron alertas.</Text>
+            return (
+                <View style={styles.container}>
+                    <Text style={{ textAlign: 'center', marginTop: 20, color: 'white' }}>
+                        No se encontraron alertas.
+                    </Text>
+                </View>
+            );
         }
     }
 
@@ -177,121 +158,76 @@ const AlertClient = () => {
                         {selectedAlert && (
                             <View style={styles.cardSelected}>
                                 <View style={styles.headerContainer}>
-                                    <Text style={styles.urgentText}>
-                                        URGENTE
-                                    </Text>
+                                    <Text style={styles.urgentText}>URGENTE</Text>
                                 </View>
-
                                 <View style={styles.imageAndDetailsContainer}>
                                     <View style={styles.imageContainer}>
                                         {selectedAlert.fotoDesaparecido && (
                                             <Image
-                                                source={{
-                                                    uri: selectedAlert.fotoDesaparecido,
-                                                }}
+                                                source={{ uri: selectedAlert.fotoDesaparecido }}
                                                 style={styles.image}
                                             />
                                         )}
                                     </View>
                                     <View style={styles.detailsContainer}>
                                         <Text style={styles.name}>
-                                            {selectedAlert.nombresDesaparecido}{' '}
-                                            {
-                                                selectedAlert.apellidosDesaparecido
-                                            }
+                                            {selectedAlert.nombresDesaparecido} {selectedAlert.apellidosDesaparecido}
                                         </Text>
                                         <Text style={styles.infoText}>
-                                            <Text style={styles.infoTitle}>
-                                                LUGAR DE DESAPARICIÓN:{' '}
-                                            </Text>
-                                            {
-                                                selectedAlert.direccionDesaparicion
-                                            }
+                                            <Text style={styles.infoTitle}>LUGAR DE DESAPARICIÓN: </Text>
+                                            {selectedAlert.direccionDesaparicion}
                                         </Text>
                                         <Text style={styles.infoText}>
-                                            <Text style={styles.infoTitle}>
-                                                FECHA DE DESAPARICIÓN:{' '}
-                                            </Text>
-                                            {new Date(
-                                                selectedAlert.fechaDesaparicion
-                                            ).toLocaleDateString()}
+                                            <Text style={styles.infoTitle}>FECHA DE DESAPARICIÓN: </Text>
+                                            {new Date(selectedAlert.fechaDesaparicion).toLocaleDateString()}
                                         </Text>
                                         <Text style={styles.infoText}>
-                                            <Text style={styles.infoTitle}>
-                                                EDAD:{' '}
-                                            </Text>
-                                            {selectedAlert.edadDesaparecido}{' '}
-                                            años
+                                            <Text style={styles.infoTitle}>EDAD: </Text>
+                                            {selectedAlert.edadDesaparecido} años
                                         </Text>
                                         <Text style={styles.infoText}>
-                                            <Text style={styles.infoTitle}>
-                                                GÉNERO:{' '}
-                                            </Text>
+                                            <Text style={styles.infoTitle}>GÉNERO: </Text>
                                             {selectedAlert.sexoDesaparecido}
                                         </Text>
                                         <Text style={styles.infoText}>
-                                            <Text style={styles.infoTitle}>
-                                                ESTATURA:{' '}
-                                            </Text>
-                                            {selectedAlert.estaturaDesaparecido}{' '}
-                                            m
+                                            <Text style={styles.infoTitle}>ESTATURA: </Text>
+                                            {selectedAlert.estaturaDesaparecido} m
                                         </Text>
                                     </View>
                                 </View>
-
                                 <View style={styles.infoSection}>
-                                    <Text style={styles.infoTitle}>
-                                        CARACTERÍSTICAS FÍSICAS Y VESTIMENTA
-                                    </Text>
+                                    <Text style={styles.infoTitle}>CARACTERÍSTICAS FÍSICAS Y VESTIMENTA</Text>
                                     <View style={styles.infoTable}>
                                         <View style={styles.tableRow}>
-                                            <Text style={styles.tableHeader}>
-                                                TEZ
-                                            </Text>
-                                            <Text style={styles.tableHeader}>
-                                                CABELLO
-                                            </Text>
-                                            <Text style={styles.tableHeader}>
-                                                COMPLEXIÓN
-                                            </Text>
-                                            <Text style={styles.tableHeader}>
-                                                COLOR DE OJOS
-                                            </Text>
+                                            <Text style={styles.tableHeader}>TEZ</Text>
+                                            <Text style={styles.tableHeader}>CABELLO</Text>
+                                            <Text style={styles.tableHeader}>COMPLEXIÓN</Text>
+                                            <Text style={styles.tableHeader}>COLOR DE OJOS</Text>
                                         </View>
                                         <View style={styles.tableRow}>
                                             <Text style={styles.tableCell}>
-                                                {selectedAlert.tezDesaparecido ||
-                                                    'No indica'}
+                                                {selectedAlert.tezDesaparecido || 'No indica'}
                                             </Text>
                                             <Text style={styles.tableCell}>
-                                                {selectedAlert.cabelloDesaparecido ||
-                                                    'Lacio, negro'}
+                                                {selectedAlert.cabelloDesaparecido || 'Lacio, negro'}
                                             </Text>
                                             <Text style={styles.tableCell}>
-                                                {selectedAlert.cabelloDesaparecido ||
-                                                    'Lacio, negro'}
+                                                {selectedAlert.complexionDesaparecido || 'No indica'}
                                             </Text>
                                             <Text style={styles.tableCell}>
-                                                {selectedAlert.cabelloDesaparecido ||
-                                                    'Lacio, negro'}
+                                                {selectedAlert.colorOjosDesaparecido || 'No indica'}
                                             </Text>
                                         </View>
                                         <View style={styles.tableRow}>
-                                            <Text style={styles.tableHeader}>
-                                                VESTIMENTA
-                                            </Text>
-                                            <Text style={styles.tableHeader}>
-                                                SEÑAS PARTICULARES
-                                            </Text>
+                                            <Text style={styles.tableHeader}>VESTIMENTA</Text>
+                                            <Text style={styles.tableHeader}>SEÑAS PARTICULARES</Text>
                                         </View>
                                         <View style={styles.tableRow}>
                                             <Text style={styles.tableCell}>
-                                                {selectedAlert.vestimentaDesaparecido ||
-                                                    'Sudadero corinto, pants azul, zapatos negros'}
+                                                {selectedAlert.vestimentaDesaparecido || 'Sudadero corinto, pants azul, zapatos negros'}
                                             </Text>
                                             <Text style={styles.tableCell}>
-                                                {selectedAlert.senasParticularesDesaparecido ||
-                                                    'No indica'}
+                                                {selectedAlert.senasParticularesDesaparecido || 'No indica'}
                                             </Text>
                                         </View>
                                     </View>
@@ -303,8 +239,8 @@ const AlertClient = () => {
             </Modal>
             <View style={styles.footer}></View>
         </View>
-    )
-}
+    ) 
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -415,9 +351,15 @@ const styles = StyleSheet.create({
         padding: 10,
         marginBottom: 150,
     },
+    actionButtons: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        marginBottom: 20,
+    },
     footer: {
         marginBottom: 90,
     },
-})
+    
+});
 
-export default AlertClient
+export default AlertClient;

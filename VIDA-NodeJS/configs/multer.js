@@ -15,8 +15,6 @@ const __dirname = path.dirname(__filename)
 // Define la ruta del directorio de subidas
 const uploadDir = path.join(__dirname, '../public/uploads')
 
-
-
 // Verifica si el directorio de subidas existe, si no, créalo
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true })
@@ -46,12 +44,10 @@ const filtro = (req, file, cb) => {
     }
 }
 
-
-
 //Configurar multer 
  export const upload = multer({
     storage: guardar,
-   // fileFilter: filtro
+    fileFilter: filtro
 
 })
 

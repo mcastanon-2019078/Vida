@@ -35,6 +35,10 @@ const WelcomeScreen = () => {
         navigation.navigate('HomeScreen')
     }
 
+    const handleRegister = () => {
+        navigation.navigate('Register')
+    }
+
     if (!fontsLoaded) return null
 
     return (
@@ -53,9 +57,14 @@ const WelcomeScreen = () => {
                     efectivo para crear conciencia sobre casos de desapariciones
                     y promover la solidaridad entre sus usuarios.
                 </Text>
-                <TouchableOpacity onPress={handleHome} style={styles.button}>
-                    <Text style={styles.buttonText}>Continuar</Text>
-                </TouchableOpacity>
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity onPress={handleHome} style={styles.button}>
+                        <Text style={styles.buttonText}>Continuar</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={handleRegister} style={styles.button}>
+                        <Text style={styles.buttonText}>Registrar</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         </ScrollView>
     )
@@ -86,10 +95,16 @@ const styles = StyleSheet.create({
         marginBottom: 40,
         fontFamily: 'Outfit',
     },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
     button: {
         padding: 20,
         backgroundColor: '#814EDA',
         borderRadius: 15,
+        flex: 1,
+        marginHorizontal: 5,
     },
     buttonText: {
         color: '#FFF',
